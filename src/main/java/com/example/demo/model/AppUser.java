@@ -56,4 +56,13 @@ public class AppUser {
 
     @OneToMany
     private List<Post> Posts;
+
+    public AppUser( String username, String password,
+                    String phoneNumber, Date dateOfBirth,String email) {
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+    }
 }
