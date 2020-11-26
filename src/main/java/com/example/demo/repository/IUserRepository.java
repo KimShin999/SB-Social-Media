@@ -1,4 +1,7 @@
 package com.example.demo.repository;
 
-public interface IUserRepository {
+import com.example.demo.model.AppUser;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+public interface IUserRepository extends PagingAndSortingRepository<AppUser,Long> {
 }
