@@ -19,4 +19,5 @@ public class Relationship {
     private Status status;
 
     private String notification;
+
 }
