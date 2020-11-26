@@ -1,7 +1,5 @@
 package com.example.demo.service.post;
-
 import com.example.demo.model.Post;
-
 import java.util.Optional;
 
 public interface IPostService {

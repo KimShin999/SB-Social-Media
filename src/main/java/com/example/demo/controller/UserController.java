@@ -5,6 +5,7 @@ import com.example.demo.model.AppUser;
 import com.example.demo.model.Post;
 import com.example.demo.model.PostImage;
 import com.example.demo.service.post.IPostService;
+import com.example.demo.service.postImg.IPostImgService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin( "*" )
+@CrossOrigin( "*" )
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -29,22 +30,18 @@ public class UserController {
     @Autowired
     private IPostService postService;
 
-    String mCloudName = "dtcimirzt";
-    String mApiKey = "997964747139867";
-    String mApiSecret = "aHfm4-P3L-byZX4H8SQqYUfmZvc";
+    @Autowired
+    private IPostImgService postImgService;
+
+    String mCloudName = "dlb47imum";
+    String mApiKey = "639119291737257";
+    String mApiSecret = "bRuOXc6NbLsgzOXc6FKVsO9qRU0";
     Cloudinary cloudinary = new Cloudinary("cloudinary://" + mApiKey + ":" + mApiSecret + "@" + mCloudName);
 
-
-//
-//    @PostMapping("/postStatus")
-//    public ResponseEntity<Post> postStatus(@RequestBody Post post){
-//        post.setImages(listImgDemo);
-//        return new ResponseEntity<>(postService.save(post),HttpStatus.OK);
-//    }
-
-    @PostMapping("/imgPost")
-    public List<String> imgPost(@RequestParam("file") MultipartFile[] files){
+    @PostMapping("/imgPost/{content}")
+    public ResponseEntity<Post> imgPost(@RequestParam("file") MultipartFile[] files, @PathVariable String content){
         List<PostImage> listImgDemo= new ArrayList();
+        Post post = new Post();
         for (MultipartFile img : files) {
             try {
                 File postImg = Files.createTempFile("temp", img.getOriginalFilename()).toFile();
@@ -54,15 +51,16 @@ public class UserController {
                 String urlAV = jsonAV.getString("url");
                 PostImage postImage = new PostImage();
                 postImage.setImg(urlAV);
+                postImgService.save(postImage);
                 listImgDemo.add(postImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        post.setImages(listImgDemo);
+        post.setContent(content);
+        return new ResponseEntity<>(postService.save(post),HttpStatus.OK);
     }
-
-
 
 
     @GetMapping("/")
