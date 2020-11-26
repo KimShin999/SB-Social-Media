@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.model.AppRoLe;
+import com.example.demo.model.AppRole;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.ERole;
 import com.example.demo.payload.request.LoginRequest;
@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -90,20 +89,20 @@ public class AuthController {
                 signUpRequest.getEmail()
         );
         Set<String> strRoles = signUpRequest.getRole();
-        Set<AppRoLe> roles = new HashSet<>();
+        Set<AppRole> roles = new HashSet<>();
 
         if (strRoles == null) {
-            AppRoLe userRole = roleRepository.findByName(ERole.ROLE_USER)
+            AppRole userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 if ("admin".equals(role)) {
-                    AppRoLe adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    AppRole adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(adminRole);
                 } else if ("user".equals(role)){
-                    AppRoLe userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    AppRole userRole = roleRepository.findByName(ERole.ROLE_USER)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(userRole);
                 }

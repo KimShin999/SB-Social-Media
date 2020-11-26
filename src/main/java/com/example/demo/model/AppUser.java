@@ -29,14 +29,14 @@ public class AppUser {
 
     @NotNull
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 120)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<AppRoLe> roles = new HashSet<>();
+    private Set<AppRole> roles = new HashSet<>();
 
     private String firstName;
     private String lastName;
@@ -64,5 +64,8 @@ public class AppUser {
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
+    }
+
+    public AppUser() {
     }
 }
