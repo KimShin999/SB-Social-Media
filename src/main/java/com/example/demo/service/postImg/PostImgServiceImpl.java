@@ -1,7 +1,7 @@
 package com.example.demo.service.postImg;
 
 import com.example.demo.model.PostImage;
-import com.example.demo.repository.IPostImgRepository;
+import com.example.demo.repository.post.IPostImgRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
