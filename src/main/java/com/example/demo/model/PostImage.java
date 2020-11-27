@@ -11,4 +11,7 @@ public class PostImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String img;
+
+    @ManyToOne
+    private Post post;
 }

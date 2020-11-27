@@ -33,15 +33,15 @@ public class UserController {
     @Autowired
     private IPostImgService postImgService;
 
+    List<PostImage> listImgDemo= new ArrayList();
+
     String mCloudName = "dlb47imum";
     String mApiKey = "639119291737257";
     String mApiSecret = "bRuOXc6NbLsgzOXc6FKVsO9qRU0";
     Cloudinary cloudinary = new Cloudinary("cloudinary://" + mApiKey + ":" + mApiSecret + "@" + mCloudName);
 
-    @PostMapping("/imgPost/{content}")
-    public ResponseEntity<Post> imgPost(@RequestParam("file") MultipartFile[] files, @PathVariable String content){
-        List<PostImage> listImgDemo= new ArrayList();
-        Post post = new Post();
+    @PostMapping("/imgPost")
+    public void imgPost(@RequestParam("file") MultipartFile[] files){
         for (MultipartFile img : files) {
             try {
                 File postImg = Files.createTempFile("temp", img.getOriginalFilename()).toFile();
@@ -57,8 +57,14 @@ public class UserController {
                 e.printStackTrace();
             }
         }
-        post.setImages(listImgDemo);
+    }
+
+    @GetMapping("/createpost/{content}")
+    public ResponseEntity<Post> Post(@PathVariable String content){
+        Post post = new Post();
         post.setContent(content);
+        post.setImages(listImgDemo);
+        listImgDemo = new ArrayList<>();
         return new ResponseEntity<>(postService.save(post),HttpStatus.OK);
     }
 
