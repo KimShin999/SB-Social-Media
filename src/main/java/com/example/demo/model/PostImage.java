@@ -1,5 +1,7 @@
 package com.example.demo.model;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 
 @Data
@@ -9,4 +11,7 @@ public class PostImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String img;
+
+    @ManyToOne
+    private Post post;
 }
