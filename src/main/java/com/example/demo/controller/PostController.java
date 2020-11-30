@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/posts")
@@ -63,15 +61,13 @@ public class PostController {
         Post post = new Post();
         post.setContent(content);
         post.setImages(listImgDemo);
+        Post post1 = postService.save(post);
         listImgDemo = new ArrayList<>();
-        return new ResponseEntity<>(postService.save(post), HttpStatus.OK);
+        return new ResponseEntity<>(post1, HttpStatus.OK);
     }
-
     @GetMapping("/")
     public ResponseEntity<Iterable<Post>> showAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
-
-
 
 }
