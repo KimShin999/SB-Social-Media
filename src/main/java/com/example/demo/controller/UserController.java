@@ -2,6 +2,8 @@ package com.example.demo.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.model.AppUser;
+import com.example.demo.model.Gender;
+import com.example.demo.service.gender.IGenderService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class UserController {
 
     @Autowired
     IUserService userService;
+    @Autowired
+    IGenderService genderService;
 
     @GetMapping("/content")
     @PreAuthorize("hasRole('USER')")
@@ -56,5 +60,20 @@ public class UserController {
             e.printStackTrace();
         }
         return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+    @GetMapping("/getAllGender")
+    public ResponseEntity<Iterable<Gender>> showAll(){
+        return  new ResponseEntity<>(genderService.findAll(),HttpStatus.OK);
+    }
+
+    @PutMapping("/changeInfo/{id}")
+    public ResponseEntity<AppUser> changeInfo(@RequestBody AppUser user,@PathVariable Long id){
+        AppUser appUser = userService.findById(id).get();
+        appUser.setFirstName(user.getFirstName());
+        appUser.setLastName(user.getLastName());
+        appUser.setPhoneNumber(user.getPhoneNumber());
+        appUser.setEmail(user.getEmail());
+        userService.save(appUser);
+        return new ResponseEntity<>(appUser,HttpStatus.OK);
     }
 }

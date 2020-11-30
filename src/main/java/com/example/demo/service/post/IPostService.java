@@ -1,5 +1,8 @@
 package com.example.demo.service.post;
+import com.example.demo.model.AppUser;
 import com.example.demo.model.Post;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface IPostService {
@@ -7,5 +10,6 @@ public interface IPostService {
     Post save (Post post);
     Post remove (Long id);
     Optional<Post> findById(Long id);
+    List<Post> findAllByAppUser(AppUser user);
 
 }

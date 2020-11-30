@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -74,7 +75,7 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
-
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -108,7 +109,7 @@ public class AuthController {
                 }
             });
         }
-
+        user.setAvatar("http://res.cloudinary.com/dtcimirzt/image/upload/v1606448001/avwsreom1lizlliqe6vk.jpg");
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

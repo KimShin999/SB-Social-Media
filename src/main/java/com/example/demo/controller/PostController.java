@@ -2,11 +2,14 @@ package com.example.demo.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.demo.model.AppUser;
 import com.example.demo.model.Post;
 import com.example.demo.model.PostImage;
 import com.example.demo.service.post.IPostService;
 import com.example.demo.service.postImg.IPostImgService;
+import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,13 +35,16 @@ public class PostController {
     private IPostService postService;
 
     @Autowired
+    private IUserService userService;
+
+    @Autowired
     private IPostImgService postImgService;
 
     List<PostImage> listImgDemo= new ArrayList();
 
-    String mCloudName = "dlb47imum";
-    String mApiKey = "639119291737257";
-    String mApiSecret = "bRuOXc6NbLsgzOXc6FKVsO9qRU0";
+    String mCloudName = "dtcimirzt";
+    String mApiKey = "997964747139867";
+    String mApiSecret = "aHfm4-P3L-byZX4H8SQqYUfmZvc";
     Cloudinary cloudinary = new Cloudinary("cloudinary://" + mApiKey + ":" + mApiSecret + "@" + mCloudName);
 
     @PostMapping("/imgPost")
@@ -58,20 +66,26 @@ public class PostController {
         }
     }
 
-    @GetMapping("/createpost/{content}")
-    public ResponseEntity<Post> Post(@PathVariable String content){
-        Post post = new Post();
-        post.setContent(content);
+    @PostMapping("/createpost/{id}")
+    public ResponseEntity<Post> Post(@RequestBody Post post,@PathVariable Long id){
+        AppUser user = userService.findById(id).get();
         post.setImages(listImgDemo);
+        post.setAppUser(user);
+        post.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        postService.save(post);
         listImgDemo = new ArrayList<>();
-        return new ResponseEntity<>(postService.save(post), HttpStatus.OK);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @GetMapping("/")
     public ResponseEntity<Iterable<Post>> showAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
-
-
-
+    @GetMapping("/getPostByUser/{id}")
+    public ResponseEntity<List<Post>> getPost(@PathVariable Long id){
+        AppUser user = userService.findById(id).get();
+        List<Post> posts = postService.findAllByAppUser(user);
+//        stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+        return new ResponseEntity<>(posts,HttpStatus.OK);
+    }
 }
