@@ -20,7 +20,7 @@ public class Post {
     private PrivacyPost privacyPost;
 
     @OneToMany
-    private List<Comment> Comments;
+    private List<Comment> comments;
 
     @OneToMany
     private List<AppLike> likes;

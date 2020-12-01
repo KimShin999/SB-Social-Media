@@ -11,7 +11,6 @@ import com.example.demo.service.post.IPostService;
 import com.example.demo.service.postImg.IPostImgService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -87,10 +85,42 @@ public class PostController {
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
     @GetMapping("/getAllPostsByUser/{id}")
-    public ResponseEntity<List<Post>> getPost(@PathVariable Long id){
+    public ResponseEntity<Iterable<Post>> getPost(@PathVariable Long id){
         AppUser user = userService.findById(id).get();
         List<Post> posts = postService.findAllByAppUser(user);
 //        stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+        Collections.reverse(posts);
         return new ResponseEntity<>(posts,HttpStatus.OK);
     }
+
+    @PostMapping("/postComment/{userId}/{id}")
+    public ResponseEntity<Post> postComment (@PathVariable Long id, @RequestBody Comment comment,@PathVariable Long userId){
+        AppUser user = userService.findById(userId).get();
+        Post post = postService.findById(id).get();
+        commentService.save(comment);
+        comment.setUser(user);
+        comment.setPost(post);
+        post.getComments().add(comment);
+        postService.save(post);
+        return new ResponseEntity<>(post,HttpStatus.OK);
+    }
+
+    @GetMapping("getAllCommentsByPost/{id}")
+    public ResponseEntity<Iterable<Comment>> getAllComment(@PathVariable Long id){
+        Post post = postService.findById(id).get();
+        Iterable<Comment> comments = commentService.findAllByPost(post);
+        return new ResponseEntity<>(comments,HttpStatus.OK);
+    }
+
+    @PutMapping("/updatePost/{id}")
+    public ResponseEntity<Post> updateComment(@RequestBody Post post,@PathVariable Long id ){
+        if (post.getAppUser().getId()== id){
+            Post post1 = postService.findById(post.getId()).get();
+//            post.setImages(post1.getImages());
+            postService.save(post);
+            return new ResponseEntity<>(post,HttpStatus.OK);
+        }
+        return null;
+    }
+
 }
