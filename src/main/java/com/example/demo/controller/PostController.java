@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.demo.model.AppUser;
 import com.example.demo.model.Post;
 import com.example.demo.model.PostImage;
 import com.example.demo.service.post.IPostService;
@@ -34,9 +35,9 @@ public class PostController {
 
     List<PostImage> listImgDemo= new ArrayList();
 
-    String mCloudName = "dlb47imum";
-    String mApiKey = "639119291737257";
-    String mApiSecret = "bRuOXc6NbLsgzOXc6FKVsO9qRU0";
+    String mCloudName = "dtcimirzt";
+    String mApiKey = "997964747139867";
+    String mApiSecret = "aHfm4-P3L-byZX4H8SQqYUfmZvc";
     Cloudinary cloudinary = new Cloudinary("cloudinary://" + mApiKey + ":" + mApiSecret + "@" + mCloudName);
 
     @PostMapping("/imgPost")
@@ -71,7 +72,5 @@ public class PostController {
     public ResponseEntity<Iterable<Post>> showAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service.post;
 
+import com.example.demo.model.AppUser;
 import com.example.demo.model.Post;
 import com.example.demo.repository.post.IPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,5 @@ public class PostServiceImpl implements IPostService {
     public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }
-
 
 }
