@@ -2,9 +2,6 @@ package com.example.demo.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.model.AppUser;
-import com.example.demo.model.Relationship;
-import com.example.demo.service.relationship.IRelationshipService;
-import com.example.demo.service.status.IStatusService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +27,6 @@ public class UserController {
 
     @Autowired
     IUserService userService;
-
-    @Autowired
-    IRelationshipService relationshipService;
-
-    @Autowired
-    IStatusService statusService;
 
     @GetMapping("/content")
     @PreAuthorize("hasRole('USER')")
@@ -64,32 +55,4 @@ public class UserController {
         }
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
-
-    @PostMapping("/friendRequest")
-    public ResponseEntity<Relationship> friendRequest(@RequestBody AppUser[] appUser){
-        Relationship relationship = new Relationship();
-        relationship.setFirstUser(appUser[0]);
-        relationship.setSecondUser(appUser[1]);
-        relationship.setStatus(statusService.findById(1L).get());
-        relationshipService.save(relationship);
-        return new ResponseEntity<>(relationship, HttpStatus.OK);
-    }
-
-    @PutMapping("/friendResponse/{id}")
-    public ResponseEntity<Relationship> agree (@PathVariable Long id){
-        Relationship relationship = relationshipService.findById(id).get();
-        relationship.setStatus(statusService.findById(2L).get());
-        return new ResponseEntity<>(relationshipService.save(relationship), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/unFriend/{id}")
-    public ResponseEntity<Relationship>  unFriend(@PathVariable Long id){
-        return  new ResponseEntity<>(relationshipService.remove(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/relationship/{id}")
-    public ResponseEntity<Relationship>  findRelationshipbyId(@PathVariable Long id){
-        return new ResponseEntity<>(relationshipService.findById(id).get(), HttpStatus.OK);
-    }
-
 }

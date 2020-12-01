@@ -1,5 +1,4 @@
 package com.example.demo.service.user;
-
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
