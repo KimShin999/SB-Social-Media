@@ -39,5 +39,4 @@ public class PostServiceImpl implements IPostService {
         return postRepository.findAllByAppUser(user);
     }
 
-
 }

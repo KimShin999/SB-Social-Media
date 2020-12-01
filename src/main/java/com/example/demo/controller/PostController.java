@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.model.AppUser;
@@ -9,7 +8,6 @@ import com.example.demo.service.post.IPostService;
 import com.example.demo.service.postImg.IPostImgService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -76,16 +71,15 @@ public class PostController {
         listImgDemo = new ArrayList<>();
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
-
     @GetMapping("/")
     public ResponseEntity<Iterable<Post>> showAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
+
     @GetMapping("/getPostByUser/{id}")
     public ResponseEntity<List<Post>> getPost(@PathVariable Long id){
         AppUser user = userService.findById(id).get();
         List<Post> posts = postService.findAllByAppUser(user);
-//        stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
         return new ResponseEntity<>(posts,HttpStatus.OK);
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,7 +46,6 @@ public class UserController {
     @PutMapping("/updateAvatar/{id}")
     public ResponseEntity<AppUser> updateAvatar(@PathVariable Long id,@RequestParam("imageFile") MultipartFile imgAvatar){
         AppUser user = userService.findById(id).get();
-
         try {
             File postImg = Files.createTempFile("temp", imgAvatar.getOriginalFilename()).toFile();
             imgAvatar.transferTo(postImg);

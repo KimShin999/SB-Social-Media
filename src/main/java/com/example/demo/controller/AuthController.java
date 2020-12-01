@@ -67,7 +67,6 @@ public class AuthController {
                 roles));
     }
 
-
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -111,6 +110,7 @@ public class AuthController {
         }
         user.setAvatar("http://res.cloudinary.com/dtcimirzt/image/upload/v1606448001/avwsreom1lizlliqe6vk.jpg");
         user.setRoles(roles);
+        user.setAvatar("http://res.cloudinary.com/dtcimirzt/image/upload/v1606448001/avwsreom1lizlliqe6vk.jpg");
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
