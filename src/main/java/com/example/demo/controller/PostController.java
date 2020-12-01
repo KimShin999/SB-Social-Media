@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.model.AppUser;
+import com.example.demo.model.Comment;
 import com.example.demo.model.Post;
 import com.example.demo.model.PostImage;
+import com.example.demo.service.post.ICommentService;
 import com.example.demo.service.post.IPostService;
 import com.example.demo.service.postImg.IPostImgService;
 import com.example.demo.service.user.IUserService;
@@ -39,6 +41,9 @@ public class PostController {
 
     @Autowired
     private IPostImgService postImgService;
+
+    @Autowired
+    private ICommentService commentService;
 
     List<PostImage> listImgDemo= new ArrayList();
 
@@ -81,7 +86,7 @@ public class PostController {
     public ResponseEntity<Iterable<Post>> showAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
-    @GetMapping("/getPostByUser/{id}")
+    @GetMapping("/getAllPostsByUser/{id}")
     public ResponseEntity<List<Post>> getPost(@PathVariable Long id){
         AppUser user = userService.findById(id).get();
         List<Post> posts = postService.findAllByAppUser(user);
