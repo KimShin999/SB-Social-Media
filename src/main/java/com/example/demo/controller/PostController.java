@@ -93,7 +93,7 @@ public class PostController {
     }
 
     @PostMapping("/postComment/{userId}/{id}")
-    public ResponseEntity<Post> postComment (@PathVariable Long id, @RequestBody Comment comment,@PathVariable Long userId){
+    public ResponseEntity<Comment> postComment (@PathVariable Long id, @RequestBody Comment comment,@PathVariable Long userId){
         AppUser user = userService.findById(userId).get();
         Post post = postService.findById(id).get();
         commentService.save(comment);
@@ -101,7 +101,7 @@ public class PostController {
         comment.setPost(post);
         post.getComments().add(comment);
         postService.save(post);
-        return new ResponseEntity<>(post,HttpStatus.OK);
+        return new ResponseEntity<>(comment,HttpStatus.OK);
     }
 
     @GetMapping("getAllCommentsByPost/{id}")
@@ -120,6 +120,11 @@ public class PostController {
             return new ResponseEntity<>(post,HttpStatus.OK);
         }
         return null;
+    }
+
+    @DeleteMapping("/deletePost/{id}")
+    public void deletePost(@PathVariable Long id){
+         postService.remove(id);
     }
 
 }

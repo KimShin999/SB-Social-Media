@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IPostService {
     Iterable<Post> findAll();
     Post save (Post post);
-    Post remove (Long id);
+    void remove (Long id);
     Optional<Post> findById(Long id);
     List<Post> findAllByAppUser(AppUser user);
 
