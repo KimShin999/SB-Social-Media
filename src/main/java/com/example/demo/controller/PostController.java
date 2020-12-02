@@ -23,32 +23,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/posts")
 public class PostController {
-
     @Autowired
     private IPostService postService;
-
     @Autowired
     private IUserService userService;
-
     @Autowired
     private IPostImgService postImgService;
-
     @Autowired
     private ICommentService commentService;
-
     List<PostImage> listImgDemo= new ArrayList();
-
     String mCloudName = "dtcimirzt";
     String mApiKey = "997964747139867";
     String mApiSecret = "aHfm4-P3L-byZX4H8SQqYUfmZvc";
     Cloudinary cloudinary = new Cloudinary("cloudinary://" + mApiKey + ":" + mApiSecret + "@" + mCloudName);
-
     @PostMapping("/imgPost")
     public void imgPost(@RequestParam("file") MultipartFile[] files){
         for (MultipartFile img : files) {
@@ -67,7 +58,6 @@ public class PostController {
             }
         }
     }
-
     @PostMapping("/createpost/{id}")
     public ResponseEntity<Post> Post(@RequestBody Post post,@PathVariable Long id){
         AppUser user = userService.findById(id).get();
@@ -82,7 +72,6 @@ public class PostController {
     public ResponseEntity<Iterable<Post>> showAll(){
         return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
     }
-
     @GetMapping("/getAllPostsByUser/{id}")
     public ResponseEntity<Iterable<Post>> getPost(@PathVariable Long id){
         AppUser user = userService.findById(id).get();
@@ -91,7 +80,6 @@ public class PostController {
         Collections.reverse(posts);
         return new ResponseEntity<>(posts,HttpStatus.OK);
     }
-
     @PostMapping("/postComment/{userId}/{id}")
     public ResponseEntity<Comment> postComment (@PathVariable Long id, @RequestBody Comment comment,@PathVariable Long userId){
         AppUser user = userService.findById(userId).get();
@@ -103,14 +91,12 @@ public class PostController {
         postService.save(post);
         return new ResponseEntity<>(comment,HttpStatus.OK);
     }
-
     @GetMapping("getAllCommentsByPost/{id}")
     public ResponseEntity<Iterable<Comment>> getAllComment(@PathVariable Long id){
         Post post = postService.findById(id).get();
         Iterable<Comment> comments = commentService.findAllByPost(post);
         return new ResponseEntity<>(comments,HttpStatus.OK);
     }
-
     @PutMapping("/updatePost/{id}")
     public ResponseEntity<Post> updateComment(@RequestBody Post post,@PathVariable Long id ){
         if (post.getAppUser().getId()== id){
@@ -121,10 +107,25 @@ public class PostController {
         }
         return null;
     }
-
     @DeleteMapping("/deletePost/{id}")
     public void deletePost(@PathVariable Long id){
-         postService.remove(id);
+        postService.remove(id);
     }
 
+    @PutMapping("/updateComment/{idUser}")
+    public ResponseEntity<Comment> updateComment(@RequestBody Comment comment, @PathVariable Long idUser) {
+        if (comment.getUser().getId() == idUser){
+            commentService.save(comment);
+            return new ResponseEntity<>(comment,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @DeleteMapping ("/deleteComment/{idUser}/{idComment}")
+    public ResponseEntity<Comment> deleteComment(@PathVariable Long idUser,@PathVariable Long idComment){
+        Comment comment = commentService.findById(idComment).get();
+        if (comment.getUser().getId() == idUser){
+            return new ResponseEntity<>(commentService.remove(idComment),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

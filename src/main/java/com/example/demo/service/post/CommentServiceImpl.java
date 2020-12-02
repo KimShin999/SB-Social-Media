@@ -26,12 +26,14 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public Comment remove(Long id) {
-        return null;
+        Comment comment =commentRepository.findById(id).get();
+        commentRepository.deleteById(id);
+        return comment;
     }
 
     @Override
     public Optional<Comment> findById(Long id) {
-        return Optional.empty();
+        return commentRepository.findById(id);
     }
 
     @Override

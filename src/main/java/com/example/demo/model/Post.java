@@ -1,4 +1,6 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,6 +16,7 @@ public class Post {
     private String content;
 
     @ManyToOne
+    @JsonIgnoreProperties
     private AppUser appUser;
 
     @ManyToOne
