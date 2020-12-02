@@ -1,4 +1,5 @@
 package com.example.demo.service.relationship;
+import com.example.demo.model.AppUser;
 import com.example.demo.model.Relationship;
 import com.example.demo.repository.Relationship.IRelationshipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,10 @@ public class RelationshipService implements IRelationshipService {
     @Override
     public Optional<Relationship> findById(Long id) {
         return relationshipRepository.findById(id);
+    }
+
+    @Override
+    public Iterable<Relationship> getAllByFirstUserIdOrSecondUserId(Long Id1, Long Id2) {
+        return relationshipRepository.getAllByFirstUserIdOrSecondUserId(Id1, Id2);
     }
 }

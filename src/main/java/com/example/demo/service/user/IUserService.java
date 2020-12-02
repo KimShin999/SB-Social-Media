@@ -9,4 +9,5 @@ public interface IUserService {
     AppUser save ( AppUser user);
     AppUser remove (Long id);
     Optional<AppUser> findById(Long id);
+    Iterable<AppUser> getAllByUsernameContaining(String name);
 }

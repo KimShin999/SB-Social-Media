@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/relationships")
@@ -30,7 +33,7 @@ public class RelationshipController {
         return new ResponseEntity<>(relationship, HttpStatus.OK);
     }
 
-    @PutMapping("/friendResponse/{id}")
+    @GetMapping("/friendResponse/{id}")
     public ResponseEntity<Relationship> agree (@PathVariable Long id){
         Relationship relationship = relationshipService.findById(id).get();         //check optional
         relationship.setStatus(statusService.findById(2L).get());                   //check optional
@@ -45,5 +48,22 @@ public class RelationshipController {
     @GetMapping("/{id}")
     public ResponseEntity<Relationship>  findRelationshipById(@PathVariable Long id){
         return new ResponseEntity<>(relationshipService.findById(id).get(), HttpStatus.OK);         //check optional
+    }
+
+    @GetMapping("/getListFriend/{id1}")
+    public ResponseEntity<Iterable<AppUser>> findFriend(@PathVariable Long id1){
+        List<Relationship> listRelationship = (List<Relationship>) relationshipService.getAllByFirstUserIdOrSecondUserId(id1,id1);
+        List<AppUser> listFriendRelationship = new ArrayList<>();
+        for ( Relationship relationship:  listRelationship) {
+            if (relationship.getStatus().getId() == 2){
+                if (relationship.getFirstUser().getId() != id1){
+                    listFriendRelationship.add(relationship.getFirstUser());
+                }
+                if (relationship.getSecondUser().getId() != id1){
+                    listFriendRelationship.add(relationship.getSecondUser());
+                }
+            }
+        }
+        return new ResponseEntity<>(listFriendRelationship,HttpStatus.OK);
     }
 }
