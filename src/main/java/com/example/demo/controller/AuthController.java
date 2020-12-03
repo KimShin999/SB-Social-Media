@@ -110,7 +110,7 @@ public class AuthController {
         }
         user.setAvatar("http://res.cloudinary.com/dtcimirzt/image/upload/v1606448001/avwsreom1lizlliqe6vk.jpg");
         user.setRoles(roles);
-        user.setAvatar("http://res.cloudinary.com/dtcimirzt/image/upload/v1606448001/avwsreom1lizlliqe6vk.jpg");
+        user.setCover("https://res.cloudinary.com/dtcimirzt/image/upload/v1606880925/yjpu56cvgddxpx9utqu7.jpg");
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

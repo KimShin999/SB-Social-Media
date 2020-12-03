@@ -16,7 +16,6 @@ public class Post {
     private String content;
 
     @ManyToOne
-    @JsonIgnoreProperties
     private AppUser appUser;
 
     @ManyToOne

@@ -74,4 +74,21 @@ public class UserController {
         userService.save(appUser);
         return new ResponseEntity<>(appUser,HttpStatus.OK);
     }
+
+    @PutMapping("/updateCover/{id}")
+    public ResponseEntity<AppUser> updateCover(@PathVariable Long id,@RequestParam("imageFile") MultipartFile imgAvatar){
+        AppUser user = userService.findById(id).get();
+        try {
+            File postImg = Files.createTempFile("temp", imgAvatar.getOriginalFilename()).toFile();
+            imgAvatar.transferTo(postImg);
+            Map rspCover = cloudinary.uploader().upload(postImg, ObjectUtils.emptyMap());
+            JSONObject jsonAV = new JSONObject(rspCover);
+            String urlAV = jsonAV.getString("url");
+            user.setCover(urlAV);
+            userService.save(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    }
 }
