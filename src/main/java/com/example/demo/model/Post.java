@@ -1,4 +1,6 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -23,6 +25,7 @@ public class Post {
     private List<Comment> comments;
 
     @OneToMany
+    @JsonIgnoreProperties("post")
     private List<AppLike> likes;
 
     @OneToMany

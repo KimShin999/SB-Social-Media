@@ -37,6 +37,14 @@ public class LikeController {
         return likeService.findByPostAndUser(post, user);
     }
 
+    @GetMapping("/checkLike/{postId}/{userId}")
+    public ResponseEntity<Boolean> isLike(@PathVariable Long postId, @PathVariable Long userId){
+        if(findByPostAndUser(postId, userId).isPresent()){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
     @GetMapping("/update/{postId}/{userId}")
     public ResponseEntity<AppLike> deleteLike(@PathVariable Long postId, @PathVariable Long userId){
         if(findByPostAndUser(postId, userId).isPresent()){

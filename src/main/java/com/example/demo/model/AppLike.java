@@ -1,5 +1,6 @@
 package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,7 +17,8 @@ public class AppLike {
     private AppUser user;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonIgnoreProperties("likes")
+//    @JsonIgnore
     private Post post;
 
     private String notification;
