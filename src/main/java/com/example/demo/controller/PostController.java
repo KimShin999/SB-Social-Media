@@ -8,6 +8,7 @@ import com.example.demo.model.PostImage;
 import com.example.demo.service.post.ICommentService;
 import com.example.demo.service.post.IPostService;
 import com.example.demo.service.postImg.IPostImgService;
+import com.example.demo.service.privacypost.IPrivacyPostService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class PostController {
     private IPostImgService postImgService;
     @Autowired
     private ICommentService commentService;
+
+    @Autowired
+    private IPrivacyPostService privacyPostService;
+
     List<PostImage> listImgDemo= new ArrayList();
     String mCloudName = "dtcimirzt";
     String mApiKey = "997964747139867";
@@ -64,6 +69,7 @@ public class PostController {
         post.setImages(listImgDemo);
         post.setAppUser(user);
         post.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        post.setPrivacyPost(privacyPostService.findById(1L).get());
         postService.save(post);
         listImgDemo = new ArrayList<>();
         return new ResponseEntity<>(post, HttpStatus.OK);
