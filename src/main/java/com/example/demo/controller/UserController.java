@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -98,8 +100,15 @@ public class UserController {
         return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
     }
 
-    @GetMapping("/searchByName/{name}")
-    public ResponseEntity<Iterable<AppUser>> getAllUserByName(@PathVariable String name){
-        return new ResponseEntity<>(userService.getAllByUsernameContaining(name),HttpStatus.OK);
+    @GetMapping("/searchByName/{name}/{id}")
+    public ResponseEntity<Iterable<AppUser>> getAllUserByName(@PathVariable String name, @PathVariable Long id){
+        List<AppUser> listUser = (List<AppUser>) userService.getAllByUsernameContaining(name);
+        List<AppUser> listUser2 = new ArrayList<>();
+        for (AppUser appUser: listUser ) {
+            if (appUser.getId() != id){
+                listUser2.add(appUser);
+            }
+        }
+        return new ResponseEntity<>( listUser2,HttpStatus.OK);
     }
 }

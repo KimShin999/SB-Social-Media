@@ -70,8 +70,10 @@ public class PostController {
     }
     @GetMapping("/")
     public ResponseEntity<Iterable<Post>> showAll(){
-        return new ResponseEntity<>(postService.findAll(),HttpStatus.OK);
+        Iterable<Post> listPost = postService.findAll();
+        return new ResponseEntity<>(listPost,HttpStatus.OK);
     }
+
     @GetMapping("/getAllPostsByUser/{id}")
     public ResponseEntity<Iterable<Post>> getPost(@PathVariable Long id){
         AppUser user = userService.findById(id).get();
