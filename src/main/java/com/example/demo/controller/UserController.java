@@ -3,6 +3,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Gender;
+import com.example.demo.model.Post;
 import com.example.demo.service.gender.IGenderService;
 import com.example.demo.service.user.IUserService;
 import org.cloudinary.json.JSONObject;
@@ -76,7 +77,7 @@ public class UserController {
     }
 
     @PutMapping("/updateCover/{id}")
-    public ResponseEntity<AppUser> updateCover(@PathVariable Long id,@RequestParam("imageFile") MultipartFile imgAvatar){
+    public ResponseEntity<AppUser> updateCover(@PathVariable Long id,@RequestParam("imageFile") MultipartFile imgAvatar) {
         AppUser user = userService.findById(id).get();
         try {
             File postImg = Files.createTempFile("temp", imgAvatar.getOriginalFilename()).toFile();
@@ -89,6 +90,16 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllUser")
+    public ResponseEntity<Iterable<AppUser>> getAllUser(){
+        return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
+    }
+
+    @GetMapping("/searchByName/{name}")
+    public ResponseEntity<Iterable<AppUser>> getAllUserByName(@PathVariable String name){
+        return new ResponseEntity<>(userService.getAllByUsernameContaining(name),HttpStatus.OK);
     }
 }

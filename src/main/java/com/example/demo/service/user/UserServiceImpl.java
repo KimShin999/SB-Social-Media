@@ -31,4 +31,9 @@ public class UserServiceImpl implements IUserService {
     public Optional<AppUser> findById(Long id) {
         return userRepository.findById(id);
     }
+
+    @Override
+    public Iterable<AppUser> getAllByUsernameContaining(String name) {
+        return userRepository.getAllByUsernameContaining(name);
+    }
 }
