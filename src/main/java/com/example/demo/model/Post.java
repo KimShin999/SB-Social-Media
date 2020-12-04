@@ -26,6 +26,7 @@ public class Post {
     private List<Comment> comments;
 
     @OneToMany
+    @JsonIgnoreProperties("post")
     private List<AppLike> likes;
 
     @OneToMany

@@ -38,4 +38,16 @@ public class RelationshipService implements IRelationshipService {
     public Iterable<Relationship> getAllByFirstUserIdOrSecondUserId(Long Id1, Long Id2) {
         return relationshipRepository.getAllByFirstUserIdOrSecondUserId(Id1, Id2);
     }
+
+    @Override
+    public Optional<Relationship> findByFirstUserIdAndSecondUserId(Long Id1, Long Id2) {
+        return relationshipRepository.findByFirstUserIdAndSecondUserId(Id1, Id2);
+    }
+
+    @Override
+    public Iterable<Relationship> getAllBySecondUserId(Long id) {
+        return relationshipRepository.getAllBySecondUserId(id);
+    }
+
+
 }

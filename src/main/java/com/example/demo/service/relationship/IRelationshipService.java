@@ -1,6 +1,5 @@
 package com.example.demo.service.relationship;
 
-import com.example.demo.model.AppUser;
 import com.example.demo.model.Relationship;
 
 import java.util.Optional;
@@ -11,4 +10,6 @@ public interface IRelationshipService {
     Relationship remove (Long id);
     Optional<Relationship> findById(Long id);
     Iterable<Relationship> getAllByFirstUserIdOrSecondUserId(Long Id1,Long Id2);
+    Optional<Relationship> findByFirstUserIdAndSecondUserId(Long Id1,Long Id2);
+    Iterable<Relationship> getAllBySecondUserId(Long id);
 }
