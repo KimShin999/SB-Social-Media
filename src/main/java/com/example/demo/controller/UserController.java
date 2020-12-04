@@ -72,6 +72,7 @@ public class UserController {
         appUser.setLastName(user.getLastName());
         appUser.setPhoneNumber(user.getPhoneNumber());
         appUser.setEmail(user.getEmail());
+        appUser.setGender(user.getGender());
         userService.save(appUser);
         return new ResponseEntity<>(appUser,HttpStatus.OK);
     }

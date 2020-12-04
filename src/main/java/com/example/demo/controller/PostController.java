@@ -84,12 +84,13 @@ public class PostController {
     public ResponseEntity<Comment> postComment (@PathVariable Long id, @RequestBody Comment comment,@PathVariable Long userId){
         AppUser user = userService.findById(userId).get();
         Post post = postService.findById(id).get();
-        commentService.save(comment);
-        comment.setUser(user);
-        comment.setPost(post);
-        post.getComments().add(comment);
-        postService.save(post);
-        return new ResponseEntity<>(comment,HttpStatus.OK);
+            commentService.save(comment);
+            comment.setUser(user);
+            comment.setPost(post);
+            post.getComments().add(comment);
+            postService.save(post);
+            return new ResponseEntity<>(comment,HttpStatus.OK);
+
     }
     @GetMapping("getAllCommentsByPost/{id}")
     public ResponseEntity<Iterable<Comment>> getAllComment(@PathVariable Long id){
@@ -101,7 +102,6 @@ public class PostController {
     public ResponseEntity<Post> updateComment(@RequestBody Post post,@PathVariable Long id ){
         if (post.getAppUser().getId()== id){
             Post post1 = postService.findById(post.getId()).get();
-//            post.setImages(post1.getImages());
             postService.save(post);
             return new ResponseEntity<>(post,HttpStatus.OK);
         }
