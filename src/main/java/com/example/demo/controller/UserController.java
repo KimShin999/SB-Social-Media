@@ -103,7 +103,7 @@ public class UserController {
 
     @GetMapping("/searchByName/{name}/{id}")
     public ResponseEntity<Iterable<AppUser>> getAllUserByName(@PathVariable String name, @PathVariable Long id){
-        List<AppUser> listUser = (List<AppUser>) userService.getAllByUsernameContaining(name);
+        List<AppUser> listUser = (List<AppUser>) userService.getAllByFirstNameContaining(name);
         List<AppUser> listUser2 = new ArrayList<>();
         for (AppUser appUser: listUser ) {
             if (appUser.getId() != id){

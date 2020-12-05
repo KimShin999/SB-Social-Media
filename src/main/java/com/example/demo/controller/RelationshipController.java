@@ -75,6 +75,20 @@ public class RelationshipController {
         }
     }
 
+    @PostMapping("/getListRelationship/{id}")
+    public ResponseEntity<List<Relationship>>  findListRelationshipByIdAndId(@PathVariable Long id, @RequestBody AppUser[] appUser) {
+        List<Relationship> listRelationship = new ArrayList<>();
+        for (AppUser user: appUser) {
+            if (relationshipService.findByFirstUserIdAndSecondUserId(user.getId(), id).isPresent()) {
+                listRelationship.add(relationshipService.findByFirstUserIdAndSecondUserId(user.getId(), id).get());
+            }else if (relationshipService.findByFirstUserIdAndSecondUserId(id, user.getId()).isPresent()){
+                listRelationship.add(relationshipService.findByFirstUserIdAndSecondUserId(id, user.getId()).get());
+            }
+        }
+        return new ResponseEntity<>(listRelationship, HttpStatus.OK);
+    }
+
+
     @GetMapping("/checkRelationship/{id1}/{id2}")
     public ResponseEntity<Optional<Relationship>>  checkRelationshipByIdAndId(@PathVariable Long id1, @PathVariable Long id2){
         return new ResponseEntity<>(relationshipService.findByFirstUserIdAndSecondUserId(id1, id2), HttpStatus.OK);

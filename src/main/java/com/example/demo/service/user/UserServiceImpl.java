@@ -36,4 +36,9 @@ public class UserServiceImpl implements IUserService {
     public Iterable<AppUser> getAllByUsernameContaining(String name) {
         return userRepository.getAllByUsernameContaining(name);
     }
+
+    @Override
+    public Iterable<AppUser> getAllByFirstNameContaining(String name) {
+        return userRepository.getAllByFirstNameContaining(name);
+    }
 }

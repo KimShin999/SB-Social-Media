@@ -10,4 +10,5 @@ public interface IUserService {
     AppUser remove (Long id);
     Optional<AppUser> findById(Long id);
     Iterable<AppUser> getAllByUsernameContaining(String name);
+    Iterable<AppUser> getAllByFirstNameContaining(String name);
 }
