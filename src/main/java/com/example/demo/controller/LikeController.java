@@ -8,11 +8,14 @@ import com.example.demo.service.like.ILikeService;
 import com.example.demo.service.post.IPostService;
 import com.example.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.Like;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -64,5 +67,15 @@ public class LikeController {
     @GetMapping("/countLikes/{id}")
     public ResponseEntity<Integer> countLikes(@PathVariable Long id){
         return new ResponseEntity<>(likeService.countLikes(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/listUserLikePost/{id}")
+    public ResponseEntity<List<AppUser>> listUserLikePost(@PathVariable Long id){
+        Iterable<AppLike> listLike = likeService.findAllByPostId(id);
+        List<AppUser> listUser = new ArrayList<>();
+        for (AppLike appLike:  listLike  ) {
+            listUser.add(appLike.getUser());
+        }
+        return new ResponseEntity<>(listUser, HttpStatus.OK);
     }
 }

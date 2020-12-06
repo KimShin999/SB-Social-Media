@@ -13,6 +13,7 @@ public interface ILikeService {
     AppLike remove (Long id);
     Optional<AppLike> findById(Long id);
     List<AppLike> findAllByPost(Post post);
+    Iterable<AppLike> findAllByPostId(Long id);
     Optional<AppLike> findByPostAndUser(Post post, AppUser user);
     int countLikes(Long id);
 }

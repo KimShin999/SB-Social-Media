@@ -48,6 +48,11 @@ public class ILikeServiceImpl implements ILikeService{
     }
 
     @Override
+    public Iterable<AppLike> findAllByPostId(Long id) {
+        return likeRepository.findAllByPostId(id);
+    }
+
+    @Override
     public Optional<AppLike> findByPostAndUser(Post post, AppUser user) {
         return likeRepository.findByPostAndUser(post, user);
     }
