@@ -10,4 +10,5 @@ public interface ILikeRepository extends JpaRepository<AppLike, Long> {
     List<AppLike> findAllByPost(Post post);
     Optional<AppLike> findByPostAndUser(Post post, AppUser user);
     int countAllByPost(Post post);
+    Iterable<AppLike> findAllByPostId(Long id);
 }

@@ -8,6 +8,7 @@ import com.example.demo.payload.request.LoginRequest;
 import com.example.demo.payload.request.SignupRequest;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.payload.response.MessageResponse;
+import com.example.demo.repository.gender.IGenderRepository;
 import com.example.demo.repository.user.IRoleRepository;
 import com.example.demo.repository.user.IUserRepository;
 import com.example.demo.security.jwt.JwtUtils;
@@ -43,6 +44,9 @@ public class AuthController {
     IRoleRepository roleRepository;
 
     @Autowired
+    IGenderRepository genderRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
@@ -67,8 +71,8 @@ public class AuthController {
                 roles));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    @PostMapping("/signup/{name}")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, @PathVariable String name) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -111,6 +115,8 @@ public class AuthController {
         user.setAvatar("http://res.cloudinary.com/dtcimirzt/image/upload/v1606448001/avwsreom1lizlliqe6vk.jpg");
         user.setRoles(roles);
         user.setCover("https://res.cloudinary.com/dtcimirzt/image/upload/v1606880925/yjpu56cvgddxpx9utqu7.jpg");
+        user.setFirstName(name);
+        user.setGender(genderRepository.findById(3L).get());
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

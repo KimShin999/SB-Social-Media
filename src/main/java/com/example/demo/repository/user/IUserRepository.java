@@ -10,4 +10,5 @@ public interface IUserRepository extends JpaRepository<AppUser, Long> {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
     Iterable<AppUser> getAllByUsernameContaining(String name);
+    Iterable<AppUser> getAllByFirstNameContaining(String name);
 }

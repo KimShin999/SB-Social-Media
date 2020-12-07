@@ -60,6 +60,15 @@ public class RelationshipController {
         return  new ResponseEntity<>(relationshipService.remove(id), HttpStatus.OK);
     }
 
+    @DeleteMapping("unFriend/{id1}/{id2}")
+    public void   unFriendByUserId(@PathVariable Long id1, @PathVariable Long id2){
+        if (relationshipService.findByFirstUserIdAndSecondUserId(id1, id2).isPresent()) {
+            relationshipService.remove(relationshipService.findByFirstUserIdAndSecondUserId(id1, id2).get().getId());
+        } else {
+            relationshipService.remove(relationshipService.findByFirstUserIdAndSecondUserId(id2, id1).get().getId());
+        }
+    }
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<Relationship>  findRelationshipById(@PathVariable Long id){
 //        return new ResponseEntity<>(relationshipService.findById(id).get(), HttpStatus.OK);         //check optional
@@ -74,6 +83,20 @@ public class RelationshipController {
 
         }
     }
+
+    @PostMapping("/getListRelationship/{id}")
+    public ResponseEntity<List<Relationship>>  findListRelationshipByIdAndId(@PathVariable Long id, @RequestBody AppUser[] appUser) {
+        List<Relationship> listRelationship = new ArrayList<>();
+        for (AppUser user: appUser) {
+            if (relationshipService.findByFirstUserIdAndSecondUserId(user.getId(), id).isPresent()) {
+                listRelationship.add(relationshipService.findByFirstUserIdAndSecondUserId(user.getId(), id).get());
+            }else if (relationshipService.findByFirstUserIdAndSecondUserId(id, user.getId()).isPresent()){
+                listRelationship.add(relationshipService.findByFirstUserIdAndSecondUserId(id, user.getId()).get());
+            }
+        }
+        return new ResponseEntity<>(listRelationship, HttpStatus.OK);
+    }
+
 
     @GetMapping("/checkRelationship/{id1}/{id2}")
     public ResponseEntity<Optional<Relationship>>  checkRelationshipByIdAndId(@PathVariable Long id1, @PathVariable Long id2){
