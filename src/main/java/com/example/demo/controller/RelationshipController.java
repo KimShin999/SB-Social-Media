@@ -60,6 +60,15 @@ public class RelationshipController {
         return  new ResponseEntity<>(relationshipService.remove(id), HttpStatus.OK);
     }
 
+    @DeleteMapping("unFriend/{id1}/{id2}")
+    public void   unFriendByUserId(@PathVariable Long id1, @PathVariable Long id2){
+        if (relationshipService.findByFirstUserIdAndSecondUserId(id1, id2).isPresent()) {
+            relationshipService.remove(relationshipService.findByFirstUserIdAndSecondUserId(id1, id2).get().getId());
+        } else {
+            relationshipService.remove(relationshipService.findByFirstUserIdAndSecondUserId(id2, id1).get().getId());
+        }
+    }
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<Relationship>  findRelationshipById(@PathVariable Long id){
 //        return new ResponseEntity<>(relationshipService.findById(id).get(), HttpStatus.OK);         //check optional

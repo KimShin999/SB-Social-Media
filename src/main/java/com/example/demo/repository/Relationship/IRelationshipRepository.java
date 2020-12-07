@@ -9,4 +9,5 @@ public interface IRelationshipRepository extends JpaRepository<Relationship, Lon
     Iterable<Relationship> getAllByFirstUserIdOrSecondUserId(Long Id1,Long Id2);
     Iterable<Relationship> getAllBySecondUserId(Long id);
     Optional<Relationship> findByFirstUserIdAndSecondUserId(Long Id1, Long Id2);
+    void removeByFirstUserIdAndSecondUserId(Long id1, Long id2);
 }

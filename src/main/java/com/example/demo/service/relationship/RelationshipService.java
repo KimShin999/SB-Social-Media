@@ -49,5 +49,10 @@ public class RelationshipService implements IRelationshipService {
         return relationshipRepository.getAllBySecondUserId(id);
     }
 
+    @Override
+    public void removeByFirstUserIdAndSecondUserId(Long id1, Long id2) {
+        relationshipRepository.removeByFirstUserIdAndSecondUserId(id1, id2);
+    }
+
 
 }
