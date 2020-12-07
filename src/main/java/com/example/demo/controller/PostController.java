@@ -69,6 +69,7 @@ public class PostController {
         post.setImages(listImgDemo);
         post.setAppUser(user);
         post.setCreateAt(new Timestamp(System.currentTimeMillis()));
+        post.getCreateAt().getTimezoneOffset();
         post.setPrivacyPost(privacyPostService.findById(1L).get());
         postService.save(post);
         listImgDemo = new ArrayList<>();
